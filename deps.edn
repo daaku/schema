@@ -1,0 +1,14 @@
+{:paths ["src"]
+ :deps {org.clojure/clojure {:mvn/version "1.10.1"}}
+
+ :aliases
+ {:dev {:extra-paths ["test"]
+        :extra-deps
+        {org.clojure/tools.namespace {:mvn/version "1.0.0"}}}
+
+  :test {:extra-deps {lambdaisland/kaocha {:mvn/version "1.0.641"}
+                      lambdaisland/kaocha-cloverage {:mvn/version "1.0.56"}}
+         :main-opts ["-m" "kaocha.runner" "--plugin" "cloverage"]}
+
+  :jar {:extra-deps {seancorfield/depstar {:mvn/version "1.0.97"}}
+        :main-opts ["-m" "hf.depstar.jar" "schema.jar"]}}}
