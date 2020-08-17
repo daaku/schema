@@ -285,3 +285,14 @@
   (S (sc/re-match #"^[ab]$") "b")
   (E (sc/re-match #"^[ab]$") "c")
   (E (sc/re-match #"^[ab]$") 1))
+
+(deftest test-trim
+  (SV (sc/trim) " a   " "a")
+  (SV (sc/trim) " a   \r\n" "a")
+  (S (sc/trim) "a"))
+
+(deftest test-non-empty
+  (S (sc/non-empty) "a")
+  (S (sc/non-empty) [1])
+  (E (sc/non-empty) "")
+  (E (sc/non-empty) []))

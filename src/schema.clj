@@ -416,3 +416,17 @@
      (if (and (string? v) (re-find re v))
        v
        (error msg)))))
+
+(defn trim
+  "Trims leading and trailing whitespace."
+  []
+  cjstr/trim)
+
+(defn non-empty
+  "Ensures the value is non-empty."
+  ([] (non-empty nil))
+  ([{:keys [msg] :or {msg "This value cannot be empty."}}]
+   (fn [v]
+     (if (empty? v)
+       (error msg)
+       v))))
