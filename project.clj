@@ -1,4 +1,4 @@
-(defproject daaku/schema "2.0.0"
+(defproject daaku/schema "2.0.1"
   :description "Schema validation and transformation, using simple functions."
   :url "https://github.com/daaku/schema"
   :scm {:name "git" :url "https://github.com/daaku/schema"}
