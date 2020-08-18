@@ -1,6 +1,6 @@
-(ns schema-test-util
+(ns daaku.schema-test-util
   (:require [clojure.test :as t]
-            [schema :as sc]))
+            [daaku.schema :as sc]))
 
 (defmacro S [validator value]
   `(t/is (= ~value (~validator ~value))))

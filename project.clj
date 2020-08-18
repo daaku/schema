@@ -9,6 +9,6 @@
   :cljsbuild {:builds {:test {:source-paths ["src" "test"]
                               :compiler {:target :nodejs
                                          :output-to "target/schema.js"
-                                         :main schema-test}}}}
+                                         :main daaku.schema-test}}}}
   :aliases {"test-cljc" ["with-profile" "+test" "do" "test,"
                          "doo" "node" "test" "once"]})

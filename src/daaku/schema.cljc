@@ -1,4 +1,4 @@
-(ns schema
+(ns daaku.schema
   (:refer-clojure :exclude [comp boolean set keyword vector float int double
                             long range re-matcher])
   (:require [clojure.core :as core]

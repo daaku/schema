@@ -1,9 +1,9 @@
-(ns schema-test
-  (:require #?@(:clj  [[schema-test-util :refer [S SV E EV]]]
+(ns daaku.schema-test
+  (:require #?@(:clj  [[daaku.schema-test-util :refer [S SV E EV]]]
                 :cljs [[doo.runner :refer-macros [doo-tests]]
-                       [schema-test-util :refer-macros [S SV E EV]]])
+                       [daaku.schema-test-util :refer-macros [S SV E EV]]])
             [clojure.test :refer [deftest is]]
-            [schema :as sc]))
+            [daaku.schema :as sc]))
 
 (deftest test-error?
   (is (sc/error? (sc/error :foo)))
@@ -54,7 +54,7 @@
         {:address {:country "This is not one of the allowed values."}})
     (EV s
         {:name "yoda" :age 842 :gender :male :address "US"}
-        {:address {:schema/group
+        {:address {:daaku.schema/group
                    ["This was expected to be a group of fields."]}})))
 
 (deftest test-schema-extra-pass
@@ -288,4 +288,4 @@
   (E (sc/non-empty) "")
   (E (sc/non-empty) []))
 
-#?(:cljs (doo-tests 'schema-test))
+#?(:cljs (doo-tests 'daaku.schema-test))
