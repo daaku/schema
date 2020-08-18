@@ -1,18 +1,9 @@
 (ns schema-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require #?@(:clj  [[schema-test-util :refer [S SV E EV]]]
+                :cljs [[doo.runner :refer-macros [doo-tests]]
+                       [schema-test-util :refer-macros [S SV E EV]]])
+            [clojure.test :refer [deftest is]]
             [schema :as sc]))
-
-(defmacro S [validator value]
-  `(is (= ~value (~validator ~value))))
-
-(defmacro SV [validator input output]
-  `(is (= ~output (~validator ~input))))
-
-(defmacro E [validator value]
-  `(is (sc/error? (~validator ~value))))
-
-(defmacro EV [validator value error]
-  `(is (= ~error (sc/error-value (~validator ~value)))))
 
 (deftest test-error?
   (is (sc/error? (sc/error :foo)))
@@ -104,28 +95,28 @@
   (S (sc/int) 0)
   (E (sc/int) nil)
   (E (sc/int) "42")
-  (E (sc/int) 42.0))
+  #?(:clj (E (sc/int) 42.0)))
 
 (deftest test-long
   (S (sc/long) (long 1))
   (S (sc/long) (long 0))
   (E (sc/long) nil)
   (E (sc/long) "42")
-  (E (sc/long) 42.0))
+  #?(:clj (E (sc/long) 42.0)))
 
 (deftest test-float
   (S (sc/float) (float 1.0))
   (S (sc/float) (float 0.0))
   (E (sc/float) nil)
   (E (sc/float) "42")
-  (E (sc/float) 42))
+  #?(:clj (E (sc/float) 42)))
 
 (deftest test-double
   (S (sc/double) (double 1.0))
   (S (sc/double) (double 0.0))
   (E (sc/double) nil)
   (E (sc/double) "42")
-  (E (sc/double) 42))
+  #?(:clj (E (sc/double) 42)))
 
 (deftest test-boolean
   (S (sc/boolean) true)
@@ -296,3 +287,5 @@
   (S (sc/non-empty) [1])
   (E (sc/non-empty) "")
   (E (sc/non-empty) []))
+
+#?(:cljs (doo-tests 'schema-test))

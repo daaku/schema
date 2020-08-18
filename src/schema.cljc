@@ -141,15 +141,6 @@
        v
        (error msg)))))
 
-(defn long
-  "Indicates the field must be a long."
-  ([] (long nil))
-  ([{:keys [msg] :or {msg "This must be a long."}}]
-   (fn [v]
-     (if (instance? Long v)
-       v
-       (error msg)))))
-
 (defn float
   "Indicates the field must be a float."
   ([] (float nil))
@@ -158,6 +149,19 @@
      (if (float? v)
        v
        (error msg)))))
+
+#?(:clj
+   (defn long
+     "Indicates the field must be a long."
+     ([] (long nil))
+     ([{:keys [msg] :or {msg "This must be a long."}}]
+      (fn [v]
+        (if (instance? Long v)
+          v
+          (error msg)))))
+
+   :cljs
+   (def long float))
 
 (defn double
   "Indicates the field must be a double."
@@ -225,46 +229,72 @@
   ([] (to-int nil))
   ([{:keys [msg] :or {msg "This value could not be converted to an integer."}}]
    (fn [v]
-     (if (string? v)
-       (try
-         (Integer/parseInt v)
-         (catch NumberFormatException _
-           (error msg)))
-       (try
-         (core/int v)
-         (catch ClassCastException _
-           (error msg)))))))
+     #?(:clj
+        (if (string? v)
+          (try
+            (Integer/parseInt v)
+            (catch NumberFormatException _
+              (error msg)))
+          (try
+            (core/int v)
+            (catch ClassCastException _
+              (error msg))))
+
+        :cljs
+        (if (string? v)
+          (let [n (js/parseInt v 10)]
+            (if (js/isNaN n)
+              (error msg)
+              n))
+          (if (number? v)
+            v
+            (error msg)))))))
 
 (defn to-float
   "Parse strings using `Float/parseInt` and cast other values using `float`."
   ([] (to-float nil))
   ([{:keys [msg] :or {msg "This value could not be converted to a float."}}]
    (fn [v]
-     (if (string? v)
-       (try
-         (Float/parseFloat v)
-         (catch NumberFormatException _
-           (error msg)))
-       (try
-         (core/float v)
-         (catch ClassCastException _
-           (error msg)))))))
+     #?(:clj
+        (if (string? v)
+          (try
+            (Float/parseFloat v)
+            (catch NumberFormatException _
+              (error msg)))
+          (try
+            (core/float v)
+            (catch ClassCastException _
+              (error msg))))
 
-(defn to-double
-  "Parse strings using `Double/parseDouble` and cast other values using
-  `double`."
-  ([] (to-double nil))
-  ([{:keys [msg] :or {msg "This value could not be converted to a double."}}]
-   (fn [v]
-     (if (string? v)
-       (try
-         (Double/parseDouble v)
-         (catch NumberFormatException _
-           (error msg)))
-       (try
-         (core/double v)
-         (catch ClassCastException _
-           (error msg)))))))
+        :cljs
+        (if (string? v)
+          (let [n (js/parseFloat v 10)]
+            (if (js/isNaN n)
+              (error msg)
+              n))
+          (if (number? v)
+            v
+            (error msg)))))))
+
+#?(:clj
+   (defn to-double
+     "Parse strings using `Double/parseDouble` and cast other values using
+     `double`."
+     ([] (to-double nil))
+     ([{:keys [msg] :or {msg "This value could not be converted to a double."}}]
+      (fn [v]
+        (if (string? v)
+          (try
+            (Double/parseDouble v)
+            (catch NumberFormatException _
+              (error msg)))
+          (try
+            (core/double v)
+            (catch ClassCastException _
+              (error msg)))))))
+
+   :cljs
+   (def to-double to-float))
 
 (defn to-boolean
   "Parse strings using the following rules:
