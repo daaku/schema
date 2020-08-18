@@ -1,5 +1,6 @@
 /*.jar
 /.clj-kondo/.cache
+/.lein-failures
 /.nrepl-port
 /.rebel_readline_history
 /target
