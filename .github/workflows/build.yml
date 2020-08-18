@@ -25,4 +25,4 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
     - name: Test
-      run: lein test
+      run: lein test-cljc
