@@ -320,10 +320,10 @@
          (error msg))
 
        (number? v)
-       (case v
-         1 true
-         0 false
-         (error msg))
+       (cond
+         (= 1 v) true
+         (= 0 v) false
+         :else (error msg))
 
        :else
        (error msg)))))
